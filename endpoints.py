@@ -2,7 +2,6 @@ import requests
 import hashlib
 
 my_url = 'https://www.google.com'
-r = 'test value'
 
 def prep_request(my_url):
     url_hash = hashlib.sha256(my_url.encode())
