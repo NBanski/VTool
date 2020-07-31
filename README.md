@@ -1,2 +1,2 @@
 # virusautotal
-Tool to check URLs and files over API.
+Tool to check URLs and files over VirusTotal API.
