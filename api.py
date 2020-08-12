@@ -1,12 +1,11 @@
 import os
-path = os.getcwd() + "\VTool\environ\\api.env"
-
-# def load_file():
+path = os.getcwd() + "\env\\api.env"
 
 def load_api():
-    i = open(path, 'r').read()
-    print(i)
-
-# def set_api():
+    try:
+        i = open(path, 'r').readline().split('=')[1].strip("'")
+        return i
+    finally:
+        print("check")
 
 load_api()
