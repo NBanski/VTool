@@ -1,5 +1,5 @@
 import os
-path = os.getcwd() + "\env\\api.env"
+path = os.getcwd() + "\\env\\api.env"
 
 def load_api():
     try:
