@@ -1,6 +1,7 @@
 import os
 path = os.getcwd() + "\\env\\api.env"
 
+# Creates, writes into and reads a single API KEY from a configuration file.
 def load_api():
     try:
         with open(path, "r") as f:
@@ -17,6 +18,7 @@ def load_api():
         print("No valid API Key was found.")
         set_api()
 
+# Writes a single API KEY to a configuration file.
 def set_api():
     print("Enter valid VirusTotal API KEY:")
     key = str(input("> "))
