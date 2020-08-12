@@ -1,5 +1,12 @@
 import os
+path = os.getcwd() + "\VTool\environ\\api.env"
 
-# API_PUBLIC = os.environ.get("VT_APIPK")
-API_PUBLIC = 'ecc6d859eec1680ecc373b2c4b7ae821ab86272732e58d7a1a267fb7f2e638b6'
-print(API_PUBLIC)
+# def load_file():
+
+def load_api():
+    i = open(path, 'r').read()
+    print(i)
+
+# def set_api():
+
+load_api()
