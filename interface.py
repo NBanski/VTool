@@ -14,7 +14,7 @@ button = tk.Button(frame,
                    command=quit)
 button.pack(side=tk.LEFT)
 slogan = tk.Button(frame,
-                   text="Hello",
+                   text="SLOGAN",
                    command=write_slogan)
 slogan.pack(side=tk.LEFT)
 

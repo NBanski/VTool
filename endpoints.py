@@ -1,20 +1,20 @@
 import requests
 import hashlib
+from api import API_PUBLIC
 
 my_url = 'https://www.google.com'
 
-def prep_request(my_url):
-    url_hash = hashlib.sha256(my_url.encode())
-    r = url_hash.hexdigest()
-    return r
+def make_scan_request(prep_url):
+    url = 'https://www.virustotal.com/vtapi/v2/url/scan'
+    params = {'apikey': API_PUBLIC, 'url': my_url}
+    response = requests.post(url, data=params)
+    print(response.json())
 
-prep_url = prep_request(my_url)
+def make_report_request(id):
+    url = 'https://www.virustotal.com/vtapi/v2/url/report'
+    params = {'apikey': API_PUBLIC, 'resource' : id}
+    response = requests.post(url, params)
+    print(response.json())
 
-def make_request(prep_url):
-    headers = {'x-apikey':'test_value'}
-    url = 'https://www.virustotal.com/api/v3/urls'
-    r = requests.post(url, headers=headers, data = {'url':prep_url})
-    response = r.json()
-    return response
-
-make_request(prep_url)
+# make_request(prep_url)
+# make_report_request('d0e196a0c25d35dd0a84593cbae0f38333aa58529936444ea26453eab28dfc86-1597233114')
