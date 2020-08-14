@@ -4,7 +4,7 @@ from datetime import datetime
 from api import API_KEY
 from log import (log_url_report, log_url_scan)
 
-# To do - make inpu a list. Also: test variables.
+# To do - make input a list. Also: test variables.
 url = 'www.google.com'
 id = 0
 
