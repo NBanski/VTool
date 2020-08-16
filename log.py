@@ -9,5 +9,3 @@ def create_log_dir():
         os.makedirs(log_url_report)
     except FileExistsError:
         print("There's already one one more logs directories.")
-
-create_log_dir()
