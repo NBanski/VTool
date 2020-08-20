@@ -1,6 +1,6 @@
-import os
-import interface
+import tkinter as tk
 
-def create_app():
-    app = VTool(__name__, self)
-    return app
+class VTool:
+    def __init__(self, master):
+        self.master = master
+        

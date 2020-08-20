@@ -31,7 +31,7 @@ def url_scan(arr):
     for _ in arr:
         data = single_url_scan(_)
         filename = datetime.now().strftime("%Y%m%d %H%M%S%f")
-        with open(log_url_scan + filename + ".json", "w") as f:
+        with open(log_url_scan + '\\' + filename + ".json", "w") as f:
             json.dump(data, f)
 
 def url_report(arr):
