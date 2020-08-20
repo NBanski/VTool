@@ -1,5 +1,5 @@
 import tkinter as tk
-from interface import *
+from interface import MainView
 
 # And here an app is called.
 if __name__ == "__main__":

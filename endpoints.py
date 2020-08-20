@@ -24,8 +24,6 @@ def single_url_report(id):
  
 print(API_KEY)
 
-# Parse data from make_scan_request(m_url).
-
 # Multiple requests with logging.
 def url_scan(arr):
     for _ in arr:
