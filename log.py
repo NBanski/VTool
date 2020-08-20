@@ -1,4 +1,5 @@
 import os
+import time
 log_url_scan = os.path.join(os.getcwd(), 'logs', 'url scan', "")
 log_url_report = os.path.join(os.getcwd(), 'logs', 'url report', "")
 
@@ -9,5 +10,3 @@ def create_log_dir():
         os.makedirs(log_url_report)
     except FileExistsError:
         print("There's already one one more logs directories.")
-
-create_log_dir()

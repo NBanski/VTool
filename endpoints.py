@@ -2,7 +2,7 @@ import requests
 import json
 from datetime import datetime
 from api import API_KEY
-from log import (log_url_report, log_url_scan)
+from log import (log_url_report, log_url_scan, create_log_dir)
 
 # To do - make input a list. Also: test variables.
 url = "www.google.com"
@@ -27,18 +27,30 @@ print(API_KEY)
 # Multiple requests with logging.
 def url_scan(arr):
     for _ in arr:
-        data = single_url_scan(_)
-        filename = datetime.now().strftime("%Y%m%d %H%M%S%f")
-        with open(log_url_scan + "\\" + filename + ".json", "w") as f:
-            json.dump(data, f)
+        for _ in range(100):
+            try:
+                data = single_url_scan(_)
+                filename = datetime.now().strftime("%Y%m%d %H%M%S%f")
+                with open(log_url_scan + "\\" + filename + ".json", "w") as f:
+                    json.dump(data, f)
+            except FileNotFoundError:
+                create_log_dir()
+                continue
+            break
 
 def url_report(arr):
     for _ in arr:
-        data = single_url_report(_)
-        print(data)
-        filename = datetime.now().strftime("%Y%m%d %H%M%S%f")
-        with open(log_url_report + filename + ".json", "w") as f:
-            json.dump(data, f)
+        for _ in range(100):
+            try:
+                data = single_url_report(_)
+                print(data)
+                filename = datetime.now().strftime("%Y%m%d %H%M%S%f")
+                with open(log_url_report + filename + ".json", "w") as f:
+                    json.dump(data, f)
+            except FileNotFoundError:
+                create_log_dir()
+                continue
+            break
 
 
 url_report(["https://www.google.pl", "https://gazeta.pl"])
