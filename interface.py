@@ -50,7 +50,7 @@ class config_page(page):
         page.__init__(self, *args, **kwargs)
 
 # Here is the main window (that includes navbar at the top).
-class MainView(tk.Frame):
+class MainWindow(tk.Frame):
     def __init__(self, *args, **kwargs):
         tk.Frame.__init__(self, *args, **kwargs)
         p1 = reports_page(self)

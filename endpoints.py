@@ -52,5 +52,4 @@ def url_report(arr):
                 continue
             break
 
-
 url_report(["https://www.google.pl", "https://gazeta.pl"])
