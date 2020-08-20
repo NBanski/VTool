@@ -1,4 +1,5 @@
 import os
+
 path = os.getcwd() + "\\env\\api.env"
 
 # Creates, writes into and reads a single API KEY from a configuration file.
