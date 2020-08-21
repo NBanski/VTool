@@ -1,4 +1,5 @@
 import tkinter as tk
+from database import insert_report, init_db
 
 # Here I extend Button and other classes of tkinter to define their properties.
 # "dbutton" stands for default button.
@@ -58,9 +59,15 @@ Double click on result to jump to VirusTotal web app for details.""",
        )
 
        def get_urls():
-          result = url_box.get("1.0", "end-1c")
-          for _ in result:
-              print(_ + "step")
+          urls = url_box.get("1.0", "end-1c").split("\n")
+          print(urls)
+          for _ in urls:
+              if _ == "" or " " in _:
+                  pass
+              else:
+                  _ = "https://" + _
+                  insert_report(_)
+
 
        b1_get_report = dbutton(self, 
        text="Get the report!",
@@ -108,8 +115,34 @@ class config_page(page):
     def __init__(self, *args, **kwargs):
         page.__init__(self, *args, **kwargs)
 
+        def open_warning_window():
+            warning_window = tk.Tk()
+            warning_window["bg"] = "gray15"
+            warning_window.title("You absolute madman!")
+            warning_window.geometry("400x180")
+            dlabel(warning_window, text="""This action will erase the database (if it exists), and create a new one.
+PROCEED WITH CAUTION. THINK ABOUT BACKING UP THE BASE.
+Do you still want to do this?"""
+            ).pack(padx=20, pady=25)
+
+            def close_warning_window():
+                warning_window.destroy()
+            
+            b1_no = dbutton(warning_window, text="No", command=close_warning_window)
+            b2_yes = dbutton(warning_window, text="Yes", command=lambda:[init_db(), close_warning_window()])
+
+            b1_no.pack(side="left", padx=30)
+            b2_yes.pack(side="right", padx=30)
+
+        b1_reset_database = dbutton(self, 
+        text="Reset database",
+        command=open_warning_window
+        )
+
+        b1_reset_database.grid(column=0, row=2,)
+
 # Here is the main window (that includes navbar at the top).
-class MainWindow(tk.Frame):
+class main_window(tk.Frame):
     def __init__(self, *args, **kwargs):
         tk.Frame.__init__(self, *args, **kwargs)
         p1 = reports_page(self)
@@ -134,7 +167,7 @@ class MainWindow(tk.Frame):
         b1_get_report = dbutton(buttonframe, text="URL report", command=p1.lift)
         b2 = dbutton(buttonframe, text="URL scan", command=p2.lift)
         b3 = dbutton(buttonframe, text="File scan", command=p3.lift)
-        b4 = dbutton(buttonframe, text="Logs", command=p4.lift)
+        b4 = dbutton(buttonframe, text="History", command=p4.lift)
         b5 = dbutton(buttonframe, text="Settings", command=p5.lift)
 
         b1_get_report.pack(side="left")

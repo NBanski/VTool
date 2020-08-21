@@ -1,5 +1,6 @@
 import os
 
+config_path = os.path.join(os.getcwd(), "settings", "settings.conf")
 api_path = os.path.join(os.getcwd(), "settings", "api.env")
 
 # Creates, writes into and reads a single API KEY from the api.env file.
@@ -30,3 +31,4 @@ API_KEY = load_api()
 
 # To do: create database configuration file to be used during second and later logins.
 # It should be created on first login.
+

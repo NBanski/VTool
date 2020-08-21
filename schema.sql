@@ -1,7 +1,8 @@
 DROP TABLE IF EXISTS reports;
+DROP TABLE IF EXISTS not_exist;
 
 CREATE TABLE reports (
-  scan_id TEXT UNIQUE NOT NULL,
+  scan_id TEXT NOT NULL,
   resource TEXT NOT NULL,
   url TEXT NOT NULL,
   response_code INTEGER NOT NULL,
@@ -11,4 +12,10 @@ CREATE TABLE reports (
   filescan_id TEXT,
   positives TEXT NOT NULL,
   total TEXT NOT NULL
+);
+
+CREATE TABLE not_exist (
+    response_code TEXT NOT NULL,
+    resource TEXT NOT NULL,
+    verbose_msg TEXT NOT NULL
 );
