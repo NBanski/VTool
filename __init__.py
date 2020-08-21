@@ -7,4 +7,5 @@ if __name__ == "__main__":
     main = MainWindow(root)
     title = root.title("Virus Total API Tool")
     main.pack(side="top", fill="both", expand=True)
+    root.resizable(0, 0)
     root.mainloop()

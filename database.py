@@ -50,7 +50,8 @@ def insert_report(url_or_id):
     for _ in values:
         sql_string += "'" + str(_) + "'" + ", "
     sql_string = sql_string[:-2] + ")"
-    print(sql_string)
+    # Do usunięcia przed wersją finalną.
+    print("Query sent to database:\n", sql_string)
     try:
         db = get_db()
         db.executescript(sql_string)

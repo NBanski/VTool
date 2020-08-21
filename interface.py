@@ -6,7 +6,7 @@ class dbutton(tk.Button):
     def __init__(self, *args, **kwargs):
         tk.Button.__init__(self, *args, **kwargs)
         self["activebackground"] = "red"
-        self["bg"] = "black"
+        self["bg"] = "gray20"
         self["fg"] = "white"
         self["width"] = "20"
         self["height"] = "2"
@@ -15,14 +15,14 @@ class dbutton(tk.Button):
 class dlabel(tk.Label):
     def __init__(self, *args, **kwargs):
         tk.Label.__init__(self, *args, **kwargs)
-        self["bg"] = "black"
+        self["bg"] = "gray20"
         self["fg"] = "white"
 
 # Here is a single page.
 class page(tk.Frame):
     def __init__(self, *args, **kwargs):
         tk.Frame.__init__(self, *args, **kwargs)
-        self["bg"] = "black"
+        self["bg"] = "gray20"
     def show(self):
         self.lift()
 
@@ -30,6 +30,47 @@ class page(tk.Frame):
 class reports_page(page):
    def __init__(self, *args, **kwargs):
        page.__init__(self, *args, **kwargs)
+       url_box = tk.Text(self, 
+       fg="white", 
+       bg="gray20",
+       insertofftime=0,
+       width=40,
+       height=40,
+       wrap="none"
+       )
+
+       result_box = tk.Text(self, 
+       fg="white", 
+       bg="gray20",
+       insertofftime=0,
+       width=40,
+       height=40,
+       wrap="none"
+       )
+
+       instruction = dlabel(self, 
+       text="""Insert URL to get the report for into the left column, then click the button.
+       Results shall be displayed in the right column. Click on them to jump to VirusTotal web app for details."""
+       )
+
+       b1 = dbutton(self, text="Get the report!")
+
+       instruction.pack(side="top",
+       pady=15
+       )
+
+       b1.pack(side="bottom",
+       padx=20,
+       pady=20
+       )
+
+       url_box.pack(side="left", 
+       padx=20
+       )
+
+       result_box.pack(side="right",
+       padx=20
+       )
 
 class scans_page(page):
    def __init__(self, *args, **kwargs):
@@ -42,7 +83,8 @@ class history_page(page):
 class files_scan(page):
     def __init__(self, *args, **kwargs):
         page.__init__(self, *args, **kwargs)
-        label = dlabel(self, text='This feature will be available in v2.0.\nWhen it"s done.™')
+        label = dlabel(self, 
+        text='This feature will be available in v2.0.\nWhen it"s done.™')
         label.pack(side="top", fill="both", expand=True)
 
 class config_page(page):
@@ -60,6 +102,7 @@ class MainWindow(tk.Frame):
         p5 = config_page(self)
 
         buttonframe = tk.Frame(self)
+        buttonframe["bg"] = "gray20"
         container = tk.Frame(self)
         container.config(height='800')
         buttonframe.pack(side="top", fill="x", expand=False)

@@ -19,11 +19,6 @@ def single_url_report(url_or_id):
     url = "https://www.virustotal.com/vtapi/v2/url/report"
     params = {"apikey": API_KEY, "resource" : url_or_id}
     response = requests.post(url, params)
-    # jsondata = json.dumps(response.json(), indent=4)
+    # Do usunięcia w wersji finalnej.
+    print("Response acquired from server:\n", response.json())
     return response.json()
-
-# Multiple requests with logging.
-# To do: write the function to insert data into PostgreSQL tables.
-# Implement it here.
-
-single_url_report("https://www.google.com")
