@@ -1,4 +1,5 @@
 import os
+import sqlite3
 
 config_path = os.path.join(os.getcwd(), "settings", "settings.conf")
 api_path = os.path.join(os.getcwd(), "settings", "api.env")
@@ -28,7 +29,3 @@ def set_api():
         f.write("KEY=" + '"' + key + '"')
 
 API_KEY = load_api()
-
-# To do: create database configuration file to be used during second and later logins.
-# It should be created on first login.
-

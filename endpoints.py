@@ -2,6 +2,8 @@ import requests
 import json
 from settings import API_KEY
 
+
+
 # Single request to initiate a scan.
 def single_url_scan(url):
     url = "https://www.virustotal.com/vtapi/v2/url/scan"
