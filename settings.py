@@ -11,7 +11,7 @@ def load_api():
             key = f.readline().split('=')[1].strip('"')
         return key
     except FileNotFoundError:
-        print("File not found! Creating files...")
+        print("API Key environmental files not found! Creating them right now...")
         os.makedirs(os.path.dirname(api_path), exist_ok=True)
         with open(api_path, "w") as f:
             f.write("")
@@ -27,5 +27,3 @@ def set_api():
     key = str(input("> "))
     with open(api_path, "r+") as f:
         f.write("KEY=" + '"' + key + '"')
-
-API_KEY = load_api()

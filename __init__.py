@@ -8,22 +8,25 @@ from settings import load_api, config_path
 # It should be created on first login.
 
 def first_start():
-    for _ in range(50):
+    for _ in range(20):
         if os.path.isfile(config_path) == False:
+            print("First time, huh? Just follow the instructions.")
             os.makedirs(os.path.dirname(config_path), exist_ok=True)
             with open(config_path, "w") as f:
-                f.write("")
+                f.write("first_start"+"="+"False")
+            print("I will now create database, load API into your system and uncheck first start. Wait...")
+            load_api()
+            init_db()
+            print("Done. Have fun!")
         else:
-            with open(config_path, "a+") as f:
-                data = f.readline()
-                if "False" not in data:
-                    load_api()
-                    init_db()
-                    with open(config_path, "w") as f:
-                        f.write("first_start"+"="+"False")
+            check = open(config_path, "r").readline()
+            if "False" not in check:
+                print("Looping...")
+                pass
+            else:
+                print("Freedom!")
                 break
                     
-
 first_start()
 
 if __name__ == "__main__":

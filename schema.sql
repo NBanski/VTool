@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS reports;
-DROP TABLE IF EXISTS not_exist;
+DROP TABLE IF EXISTS not_found;
 
 CREATE TABLE reports (
   scan_id TEXT NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE reports (
   total TEXT NOT NULL
 );
 
-CREATE TABLE not_exist (
+CREATE TABLE not_found (
     response_code TEXT NOT NULL,
     resource TEXT NOT NULL,
     verbose_msg TEXT NOT NULL
