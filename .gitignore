@@ -134,3 +134,9 @@ logs/
 
 # VSCode
 .vscode/
+
+# Database
+database/
+
+# Settings
+settings/

@@ -1,55 +1,29 @@
 import requests
 import json
-from datetime import datetime
-from api import API_KEY
-from log import (log_url_report, log_url_scan, create_log_dir)
+from settings import API_KEY
 
 # To do - make input a list. Also: test variables.
 url = "www.google.com"
 id = 0
 
-# Single URL request to VT database.
-def single_url_scan(m_url):
+# Single request to initiate a scan.
+def single_url_scan(url):
     url = "https://www.virustotal.com/vtapi/v2/url/scan"
-    params = {"apikey": API_KEY, "url": m_url}
+    params = {"apikey": API_KEY, "url": url}
     response = requests.post(url, data=params)
-    return response.json()
+    jsondata = json.dumps(response.json(), indent=4)
+    return jsondata
 
-# Single URL request for site scan.
-def single_url_report(id):
+# Single request to get a report.
+def single_url_report(url_or_id):
     url = "https://www.virustotal.com/vtapi/v2/url/report"
-    params = {"apikey": API_KEY, "resource" : id}
+    params = {"apikey": API_KEY, "resource" : url_or_id}
     response = requests.post(url, params)
+    # jsondata = json.dumps(response.json(), indent=4)
     return response.json()
- 
-print(API_KEY)
 
 # Multiple requests with logging.
-def url_scan(arr):
-    for _ in arr:
-        for _ in range(100):
-            try:
-                data = single_url_scan(_)
-                filename = datetime.now().strftime("%Y%m%d %H%M%S%f")
-                with open(log_url_scan + "\\" + filename + ".json", "w") as f:
-                    json.dump(data, f)
-            except FileNotFoundError:
-                create_log_dir()
-                continue
-            break
+# To do: write the function to insert data into PostgreSQL tables.
+# Implement it here.
 
-def url_report(arr):
-    for _ in arr:
-        for _ in range(100):
-            try:
-                data = single_url_report(_)
-                print(data)
-                filename = datetime.now().strftime("%Y%m%d %H%M%S%f")
-                with open(log_url_report + filename + ".json", "w") as f:
-                    json.dump(data, f)
-            except FileNotFoundError:
-                create_log_dir()
-                continue
-            break
-
-url_report(["https://www.google.pl", "https://gazeta.pl"])
+single_url_report("https://www.google.com")
