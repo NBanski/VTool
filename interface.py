@@ -6,7 +6,7 @@ class dbutton(tk.Button):
     def __init__(self, *args, **kwargs):
         tk.Button.__init__(self, *args, **kwargs)
         self["activebackground"] = "red"
-        self["bg"] = "gray20"
+        self["bg"] = "gray15"
         self["fg"] = "white"
         self["width"] = "20"
         self["height"] = "2"
@@ -15,14 +15,14 @@ class dbutton(tk.Button):
 class dlabel(tk.Label):
     def __init__(self, *args, **kwargs):
         tk.Label.__init__(self, *args, **kwargs)
-        self["bg"] = "gray20"
+        self["bg"] = "gray15"
         self["fg"] = "white"
 
 # Here is a single page.
 class page(tk.Frame):
     def __init__(self, *args, **kwargs):
         tk.Frame.__init__(self, *args, **kwargs)
-        self["bg"] = "gray20"
+        self["bg"] = "gray15"
     def show(self):
         self.lift()
 
@@ -30,18 +30,20 @@ class page(tk.Frame):
 class reports_page(page):
    def __init__(self, *args, **kwargs):
        page.__init__(self, *args, **kwargs)
+
        url_box = tk.Text(self, 
        fg="white", 
-       bg="gray20",
+       bg="gray15",
        insertofftime=0,
        width=40,
        height=40,
-       wrap="none"
+       wrap="none",
+       insertbackground="white",
        )
 
        result_box = tk.Text(self, 
        fg="white", 
-       bg="gray20",
+       bg="gray15",
        insertofftime=0,
        width=40,
        height=40,
@@ -49,17 +51,27 @@ class reports_page(page):
        )
 
        instruction = dlabel(self, 
-       text="""Insert URL to get the report for into the left column, then click the button.
-       Results shall be displayed in the right column. Click on them to jump to VirusTotal web app for details."""
+       text="""Insert URL to get the report for into the left frame, then click the button. Skip protocol and WWW, use newline as separator.
+Results shall be displayed in the second column. There is no URL limit other than defined by your API.
+Double click on result to jump to VirusTotal web app for details.""",
+       justify="left"
        )
 
-       b1 = dbutton(self, text="Get the report!")
+       def get_urls():
+          result = url_box.get("1.0", "end-1c")
+          for _ in result:
+              print(_ + "step")
+
+       b1_get_report = dbutton(self, 
+       text="Get the report!",
+       command=get_urls
+       )
 
        instruction.pack(side="top",
        pady=15
        )
 
-       b1.pack(side="bottom",
+       b1_get_report.pack(side="bottom",
        padx=20,
        pady=20
        )
@@ -76,6 +88,10 @@ class scans_page(page):
    def __init__(self, *args, **kwargs):
        page.__init__(self, *args, **kwargs)
 
+       label = dlabel(self, 
+       text='This feature will be available in v2.0.\nWhen it"s done.™')
+       label.pack(side="top", fill="both", expand=True)
+
 class history_page(page):
    def __init__(self, *args, **kwargs):
        page.__init__(self, *args, **kwargs)
@@ -83,6 +99,7 @@ class history_page(page):
 class files_scan(page):
     def __init__(self, *args, **kwargs):
         page.__init__(self, *args, **kwargs)
+
         label = dlabel(self, 
         text='This feature will be available in v2.0.\nWhen it"s done.™')
         label.pack(side="top", fill="both", expand=True)
@@ -102,7 +119,7 @@ class MainWindow(tk.Frame):
         p5 = config_page(self)
 
         buttonframe = tk.Frame(self)
-        buttonframe["bg"] = "gray20"
+        buttonframe["bg"] = "gray15"
         container = tk.Frame(self)
         container.config(height='800')
         buttonframe.pack(side="top", fill="x", expand=False)
@@ -114,13 +131,13 @@ class MainWindow(tk.Frame):
         p4.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
         p5.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
 
-        b1 = dbutton(buttonframe, text="URL report", command=p1.lift)
+        b1_get_report = dbutton(buttonframe, text="URL report", command=p1.lift)
         b2 = dbutton(buttonframe, text="URL scan", command=p2.lift)
         b3 = dbutton(buttonframe, text="File scan", command=p3.lift)
         b4 = dbutton(buttonframe, text="Logs", command=p4.lift)
         b5 = dbutton(buttonframe, text="Settings", command=p5.lift)
 
-        b1.pack(side="left")
+        b1_get_report.pack(side="left")
         b2.pack(side="left")
         b3.pack(side="left")
         b4.pack(side="left")
