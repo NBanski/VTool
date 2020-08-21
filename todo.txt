@@ -1,0 +1,6 @@
+1. Implement "swap API" button into the "settings" card.
+1aa. Work on settings grid. Important!
+1a. Implement music... :)
+2. Implement way to display report request results.
+3. Implement scan request.
+4. Implement history checker (SQL query preferable - input fields?).
