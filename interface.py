@@ -54,7 +54,7 @@ class reports_page(page):
        instruction = dlabel(self, 
        text="""Insert URL to get the report for into the left frame, then click the button. Skip protocol and WWW, use newline as separator.
 Results shall be displayed in the second column. There is no URL limit other than defined by your API.
-Double click on result to jump to VirusTotal web app for details.""",
+Click on result to add it to scan queue (not yet implemented).""",
        justify="left"
        )
 
