@@ -27,3 +27,8 @@ def set_api():
     key = str(input("> "))
     with open(api_path, "r+") as f:
         f.write("KEY=" + '"' + key + '"')
+
+def change_api(n_key):
+    n_key = str(n_key)
+    with open(api_path, "w") as f:
+        f.write("KEY=" + '"' + n_key + '"')

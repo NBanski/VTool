@@ -1,5 +1,6 @@
 import tkinter as tk
 from database import insert_report, init_db, extract_report
+from settings import change_api
 
 # Here I extend Button and other classes of tkinter to define their properties.
 # "dbutton" stands for default button.
@@ -54,7 +55,7 @@ class reports_page(page):
        instruction = dlabel(self, 
        text="""Insert URL to get the report for into the left frame, then click the button. Skip protocol and WWW, use newline as separator.
 Results shall be displayed in the second column. There is no URL limit other than defined by your API.
-Click on result to add it to scan queue (not yet implemented).""",
+Click on result to add it to scan queue (not yet implemented, wait until v2.0).""",
        justify="left"
        )
 
@@ -123,6 +124,7 @@ class config_page(page):
             warning_window["bg"] = "gray15"
             warning_window.title("You absolute madman!")
             warning_window.geometry("400x180")
+            warning_window.resizable(0, 0)
             dlabel(warning_window, text="""This action will erase the database (if it exists), and create a new one.
 PROCEED WITH CAUTION. THINK ABOUT BACKING UP THE BASE.
 Do you still want to do this?"""
@@ -130,19 +132,54 @@ Do you still want to do this?"""
 
             def close_warning_window():
                 warning_window.destroy()
-            
-            b1_no = dbutton(warning_window, text="No", command=close_warning_window)
-            b2_yes = dbutton(warning_window, text="Yes", command=lambda:[init_db(), close_warning_window()])
 
-            b1_no.pack(side="left", padx=30)
-            b2_yes.pack(side="right", padx=30)
+            b1_no = dbutton(warning_window, text="No", command=close_warning_window)
+            b2_yes = dbutton(warning_window, text="Yes", command=lambda:[init_db(), close_warning_window()])    
+
+            b1_no.pack(side="right", padx=30)
+            b2_yes.pack(side="left", padx=30)
+
+        def open_change_api_window():
+            change_window = tk.Tk()
+            change_window["bg"] = "gray15"
+            change_window.title("Change API Key")
+            change_window.geometry("510x100")
+            change_window.resizable(0, 0)
+
+            def close_change_api_window():
+                change_window.destroy()
+
+            api_entry = tk.Entry(change_window, bg="gray15", fg="white", width=65, show="*") 
+            api_entry.grid(column=1, row=0, padx=(10,0), pady=(20, 0))
+
+            api_label = dlabel(change_window, text="Enter API Key:")
+            api_label.grid(column=0, row=0, padx=(10,0), pady=(20, 0))
+
+            api_change = dbutton(change_window, text="Change!", command=lambda:[change_api(api_entry.get()), close_change_api_window()])
+            api_change.grid(column=1, row=1, pady=(10, 10))
 
         b1_reset_database = dbutton(self, 
         text="Reset database",
         command=open_warning_window
         )
 
-        b1_reset_database.grid(column=0, row=2,)
+        b2_change_api = dbutton(self,
+        text="Change API Key",
+        command=open_change_api_window
+        )
+
+        b3_music = dbutton(self,
+        text="Get this party started!",
+        )
+
+        b4_placeholder = dbutton(self,
+        text="Just a placeholder."
+        )
+
+        b1_reset_database.grid(column=0, row=1, padx=(300, 300), pady=(250, 10))
+        b2_change_api.grid(column=0, row=2, pady=(0, 10))
+        b3_music.grid(column=0, row=3, pady=(0, 10))
+        b4_placeholder.grid(column=0, row=4, pady=(0, 10))
 
 # Here is the main window (that includes navbar at the top).
 class main_window(tk.Frame):
