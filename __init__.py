@@ -21,10 +21,8 @@ def first_start():
         else:
             check = open(config_path, "r").readline()
             if "False" not in check:
-                print("Looping...")
                 pass
             else:
-                print("Freedom!")
                 break
 
 if __name__ == "__main__":

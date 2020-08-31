@@ -69,7 +69,7 @@ Click on result to add it to scan queue (not yet implemented, wait until v2.0)."
               if _ == "" or " " in _:
                   pass
               else:
-                  _ = "https://" + _
+                  _ = "http://" + _
                   insert_report(_)
                   report = extract_report(_) + "\n"
                   result_box.insert(tk.END, str(report))
