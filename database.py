@@ -58,3 +58,20 @@ def insert_report(url_or_id):
         db.executescript(sql_string)
     except sqlite3.IntegrityError as e:
         print(e)
+
+def extract_report(url_or_id):
+    sql_string = "SELECT * FROM reports WHERE url LIKE {}".format("'%" + url_or_id + "%'")
+    print(sql_string)
+    try:
+        db = get_db()
+        report = list(db.execute(sql_string).fetchone())
+        rep_positives = report[8]
+        rep_all = report[9]
+        rep_time = report[4]
+        rep_data = rep_positives + "/" + rep_all + " at " + rep_time
+        return rep_data
+    except sqlite3.IntegrityError as e:
+        print(e)
+    except TypeError as e:
+        print(e)
+        return("No report or incorrect input.")

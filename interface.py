@@ -1,5 +1,5 @@
 import tkinter as tk
-from database import insert_report, init_db
+from database import insert_report, init_db, extract_report
 
 # Here I extend Button and other classes of tkinter to define their properties.
 # "dbutton" stands for default button.
@@ -60,6 +60,7 @@ Double click on result to jump to VirusTotal web app for details.""",
 
        def get_urls():
           urls = url_box.get("1.0", "end-1c").split("\n")
+          result_box.delete(1.0, tk.END)
           print(urls)
           for _ in urls:
               if _ == "" or " " in _:
@@ -67,6 +68,8 @@ Double click on result to jump to VirusTotal web app for details.""",
               else:
                   _ = "https://" + _
                   insert_report(_)
+                  report = extract_report(_) + "\n"
+                  result_box.insert(tk.END, str(report))
 
 
        b1_get_report = dbutton(self, 
