@@ -140,3 +140,6 @@ database/
 
 # Settings
 settings/
+
+# TODO
+.txt
