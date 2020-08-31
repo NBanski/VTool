@@ -60,11 +60,11 @@ def insert_report(url_or_id):
         print(e)
 
 def extract_report(url_or_id):
-    sql_string = "SELECT * FROM reports WHERE url LIKE {}".format("'%" + url_or_id + "%'")
+    sql_string = "SELECT * FROM reports WHERE url LIKE {} ORDER BY scan_date DESC".format("'%" + url_or_id + "%'")
     print(sql_string)
     try:
         db = get_db()
-        report = list(db.execute(sql_string).fetchone())
+        report = db.execute(sql_string).fetchone()
         rep_positives = report[8]
         rep_all = report[9]
         rep_time = report[4]
@@ -73,5 +73,12 @@ def extract_report(url_or_id):
     except sqlite3.IntegrityError as e:
         print(e)
     except TypeError as e:
-        print(e)
-        return("No report or incorrect input.")
+        try:
+            sql_string = "SELECT * FROM not_found WHERE resource LIKE {}".format("'%" + url_or_id + "%'")
+            print(sql_string)
+            not_found = db.execute(sql_string).fetchone()
+            verbose_msg = not_found[2]
+            return (verbose_msg + ".")
+        except TypeError as e:
+            print(e)
+            return("Incorrect input.")
