@@ -26,10 +26,9 @@ def first_start():
             else:
                 print("Freedom!")
                 break
-                    
-first_start()
 
 if __name__ == "__main__":
+    first_start()
     root = tk.Tk()
     main = main_window(root)
     title = root.title("Virus Total API Tool")

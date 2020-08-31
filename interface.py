@@ -47,20 +47,22 @@ class reports_page(page):
        fg="white", 
        bg="gray15",
        insertofftime=0,
-       width=40,
+       width=80,
        height=40,
-       wrap="none"
+       wrap="none",
+       state="disabled"
        )
 
        instruction = dlabel(self, 
        text="""Insert URL to get the report for into the left frame, then click the button. Skip protocol and WWW, use newline as separator.
-Results shall be displayed in the second column. There is no URL limit other than defined by your API.
+Results will be displayed in the second column. There is no URL limit other than defined by your API.
 Click on result to add it to scan queue (not yet implemented, wait until v2.0).""",
        justify="left"
        )
 
        def get_urls():
           urls = url_box.get("1.0", "end-1c").split("\n")
+          result_box.configure(state="normal")
           result_box.delete(1.0, tk.END)
           print(urls)
           for _ in urls:
@@ -71,6 +73,7 @@ Click on result to add it to scan queue (not yet implemented, wait until v2.0)."
                   insert_report(_)
                   report = extract_report(_) + "\n"
                   result_box.insert(tk.END, str(report))
+          result_box.configure(state="disabled")
 
 
        b1_get_report = dbutton(self, 
@@ -176,10 +179,10 @@ Do you still want to do this?"""
         text="Just a placeholder."
         )
 
-        b1_reset_database.grid(column=0, row=1, padx=(300, 300), pady=(250, 10))
-        b2_change_api.grid(column=0, row=2, pady=(0, 10))
-        b3_music.grid(column=0, row=3, pady=(0, 10))
-        b4_placeholder.grid(column=0, row=4, pady=(0, 10))
+        b1_reset_database.grid(column=0, row=1, padx=(450, 300), pady=(250, 10))
+        b2_change_api.grid(column=0, row=2, padx=(450, 300), pady=(0, 10))
+        b3_music.grid(column=0, row=3, padx=(450, 300), pady=(0, 10))
+        b4_placeholder.grid(column=0, row=4, padx=(450, 300), pady=(0, 10))
 
 # Here is the main window (that includes navbar at the top).
 class main_window(tk.Frame):
@@ -194,7 +197,7 @@ class main_window(tk.Frame):
         buttonframe = tk.Frame(self)
         buttonframe["bg"] = "gray15"
         container = tk.Frame(self)
-        container.config(height='800')
+        container.config(height='800', width='1000')
         buttonframe.pack(side="top", fill="x", expand=False)
         container.pack(side="top", fill="both", expand=True)
 
@@ -210,10 +213,10 @@ class main_window(tk.Frame):
         b4 = dbutton(buttonframe, text="History", command=p4.lift)
         b5 = dbutton(buttonframe, text="Settings", command=p5.lift)
 
-        b1_get_report.pack(side="left")
-        b2.pack(side="left")
-        b3.pack(side="left")
-        b4.pack(side="left")
-        b5.pack(side="left")
+        b1_get_report.pack(side="left", padx=(125,10), pady=(10,0))
+        b2.pack(side="left", padx=(0, 10), pady=(10,0))
+        b3.pack(side="left", padx=(0, 10), pady=(10,0))
+        b4.pack(side="left", padx=(0, 10), pady=(10,0))
+        b5.pack(side="left", padx=(0,125), pady=(10,0))
 
         p1.show()

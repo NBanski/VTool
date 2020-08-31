@@ -79,7 +79,7 @@ def extract_report(url_or_id):
             print(sql_string)
             not_found = db.execute(sql_string).fetchone()
             url = not_found[1]
-            return (url + "not found in the dataset.")
+            return (url + " not found in the dataset.")
         except TypeError as e:
             print(e)
             return("Incorrect input.")
