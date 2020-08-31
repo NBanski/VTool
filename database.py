@@ -65,10 +65,11 @@ def extract_report(url_or_id):
     try:
         db = get_db()
         report = db.execute(sql_string).fetchone()
+        rep_url = report[2]
         rep_positives = report[8]
         rep_all = report[9]
         rep_time = report[4]
-        rep_data = rep_positives + "/" + rep_all + " at " + rep_time
+        rep_data = rep_url + " - " + rep_positives + "/" + rep_all + " at " + rep_time
         return rep_data
     except sqlite3.IntegrityError as e:
         print(e)
@@ -77,8 +78,8 @@ def extract_report(url_or_id):
             sql_string = "SELECT * FROM not_found WHERE resource LIKE {}".format("'%" + url_or_id + "%'")
             print(sql_string)
             not_found = db.execute(sql_string).fetchone()
-            verbose_msg = not_found[2]
-            return (verbose_msg + ".")
+            url = not_found[1]
+            return (url + "not found in the dataset.")
         except TypeError as e:
             print(e)
             return("Incorrect input.")
