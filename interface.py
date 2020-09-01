@@ -172,17 +172,17 @@ Do you still want to do this?"""
         command=open_change_api_window
         )
 
-        b3_music = dbutton(self,
-        text="Get this party started!",
+        b3_placeholder = dbutton(self,
+        text="Just a placeholder."
         )
 
         b4_placeholder = dbutton(self,
-        text="Just a placeholder."
+        text="Also just a placeholder."
         )
 
         b1_reset_database.grid(column=0, row=1, padx=(450, 300), pady=(250, 10))
         b2_change_api.grid(column=0, row=2, padx=(450, 300), pady=(0, 10))
-        b3_music.grid(column=0, row=3, padx=(450, 300), pady=(0, 10))
+        b3_placeholder.grid(column=0, row=3, padx=(450, 300), pady=(0, 10))
         b4_placeholder.grid(column=0, row=4, padx=(450, 300), pady=(0, 10))
 
 # Here is the main window (that includes navbar at the top).
