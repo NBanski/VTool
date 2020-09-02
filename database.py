@@ -95,19 +95,20 @@ def search_database(url):
     for tup in tables:
         for _ in tup:
             tables_list.append(_)
+    all_results = []
     for _ in tables_list:
-        sql_string = "SELECT * FROM " + _ + " WHERE resource LIKE " + sqlite_wildcard(url)
-        results = get_db().execute(sql_string).fetchall()
-        try:
+        if _ == "reports":
+            sql_string = "SELECT * FROM " + _ + " WHERE resource LIKE " + sqlite_wildcard(url)
+            results = get_db().execute(sql_string).fetchall()
             for tup in results:
-                if tup[3] == 1:
-                    report_url = tup[5]
-                    report_resource = tup[1]
-                    report_result = tup[8] + "/" + tup[9]
-                    report_date = tup[4]
-                    print(report_resource + " " + report_result + " " + report_date + " " + report_url)
-        except IndexError:
-            print(tup[1] + " " + tup[2])
-
-
-search_database("a")
+                report_resource = tup[1]
+                report_result = tup[8] + "/" + tup[9]
+                report_date = tup[4]
+                res_data = report_resource + " " + report_result + " " + report_date
+                all_results.append(res_data)
+        if _ == "not_found":
+            sql_string = "SELECT * FROM " + _ + " WHERE resource LIKE " + sqlite_wildcard(url)
+            results = get_db().execute(sql_string).fetchall()
+            for tup in results:
+                all_results.append(tup[1] + " wasn't found in the dataset.")
+    return(all_results)

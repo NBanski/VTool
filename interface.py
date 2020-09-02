@@ -1,5 +1,6 @@
 import tkinter as tk
-from database import insert_report, init_db, extract_report
+import tkinter.scrolledtext as stxt
+from database import insert_report, init_db, extract_report, search_database
 from settings import change_api
 
 # Here I extend Button and other classes of tkinter to define their properties.
@@ -33,7 +34,7 @@ class reports_page(page):
    def __init__(self, *args, **kwargs):
        page.__init__(self, *args, **kwargs)
 
-       url_box = tk.Text(self, 
+       url_box = stxt.ScrolledText(self, 
        fg="white", 
        bg="gray15",
        insertofftime=0,
@@ -43,7 +44,7 @@ class reports_page(page):
        insertbackground="white",
        )
 
-       result_box = tk.Text(self, 
+       result_box = stxt.ScrolledText(self, 
        fg="white", 
        bg="gray15",
        insertofftime=0,
@@ -64,7 +65,6 @@ Click on result to add it to scan queue (not yet implemented, wait until v2.0)."
           urls = url_box.get("1.0", "end-1c").split("\n")
           result_box.configure(state="normal")
           result_box.delete(1.0, tk.END)
-          print(urls)
           for _ in urls:
               if _ == "" or " " in _:
                   pass
@@ -110,6 +110,60 @@ class scans_page(page):
 class history_page(page):
    def __init__(self, *args, **kwargs):
        page.__init__(self, *args, **kwargs)
+
+       instrucion = dlabel(self, 
+       text='Insert domain to search for and click on "Seek & Destroy" button.')
+
+       result_box = stxt.ScrolledText(self, 
+       fg="white", 
+       bg="gray15",
+       insertofftime=0,
+       width=100,
+       height=40,
+       wrap="none",
+       insertbackground="white",
+       state="disabled"
+       )
+
+       search_phrase = tk.Entry(self,
+       width=64,
+       bg="gray15",
+       fg="white"
+       ) 
+
+       def seek_and_destroy():
+           keyword = search_phrase.get()
+           forbidden_dictionary = ["", "DROP", "*", "NULL", " ", "-", "'", '"']
+           if keyword in forbidden_dictionary:
+                result_box.configure(state="normal")
+                result_box.delete(1.0, tk.END)
+                result_box.insert(tk.END, "Really?")
+                result_box.configure(state="disabled")
+           else:
+                result = search_database(keyword)
+                result_box.configure(state="normal")
+                result_box.delete(1.0, tk.END)
+                for _ in result:
+                    if _ in result_box.get(1.0, tk.END):
+                        print("Duplicate detected: " + _)
+                        pass
+                    else:
+                        _ = _ + "\n"
+                        result_box.configure(state="normal")
+                        result_box.insert(tk.END, _)
+                        result_box.configure(state="disabled")
+
+
+       b1_search = dbutton(self,
+       text="Seek & Destroy!",
+       command=seek_and_destroy
+       )
+
+       instrucion.pack(side="top", pady=(10, 0))
+       search_phrase.pack(side="top", pady=(10, 0))
+       b1_search.pack(side="top", pady=(10, 0))
+       result_box.pack(side="top", pady=(10, 0))
+
 
 class files_scan(page):
     def __init__(self, *args, **kwargs):
