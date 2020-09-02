@@ -145,7 +145,6 @@ class history_page(page):
                 result_box.delete(1.0, tk.END)
                 for _ in result:
                     if _ in result_box.get(1.0, tk.END):
-                        print("Duplicate detected: " + _)
                         pass
                     else:
                         _ = _ + "\n"
