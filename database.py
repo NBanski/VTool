@@ -83,3 +83,27 @@ def extract_report(url_or_id):
         except TypeError as e:
             print(e)
             return("Incorrect input.")
+
+def sqlite_wildcard(keyword):
+    keyword = "'%" + keyword + "%'"
+    return keyword
+
+def search_database(url):
+    get_tables = "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%';"
+    tables = get_db().execute(get_tables).fetchall()
+    tables_list = []
+    for tup in tables:
+        for _ in tup:
+            tables_list.append(_)
+    for _ in tables_list:
+        sql_string = "SELECT * FROM " + _ + " WHERE resource LIKE " + sqlite_wildcard(url)
+        results = get_db().execute(sql_string).fetchall()
+        for tup in results:
+            try:
+                report_url = tup[5]
+                report_resource = tup[1]
+                report_result = tup[8] + "/" + tup[9]
+                report_date = tup[4]
+                return(report_resource + " " + report_result + " " + report_date + " " + report_url)
+            except IndexError:
+                return(tup[1] + " " + tup[2])
