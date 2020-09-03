@@ -75,6 +75,7 @@ URLs not found in the database will be copied to Domain scan page.""",
                   report = extract_report(_) + "\n"
                   result_box.insert(tk.END, str(report))
                   result_box.update()
+                  result_box.see(tk.END)
           result_box.configure(state="disabled")
 
 
@@ -145,6 +146,7 @@ Be patient. Scanning takes one minute.""",
                     id_list.append(resource_id)
                     result_box.insert(tk.END, "Scan request sent for... " + str(_) + "\n")
                     result_box.update()
+                    result_box.see(tk.END)
             result_box.insert(tk.END, "Now, wait a minute. Literally.")
             for _ in range(60):
                 result_box.delete(1.0, tk.END)
@@ -158,6 +160,7 @@ Be patient. Scanning takes one minute.""",
                 report = extract_report_by_id(_)
                 result_box.insert(tk.END, str(report) + "\n")
                 result_box.update()
+                result_box.see(tk.END)
             result_box.configure(state="disabled")
 
        b1_get_report = dbutton(self, 
