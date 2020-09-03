@@ -56,9 +56,9 @@ class reports_page(page):
        )
 
        instruction = dlabel(self, 
-       text="""Domain to check goes into the left box. Result will appear in the right box.
-Acceptable format is <domain name>.<extension>. Do not use protocol or WWW prefix.
-Domains not found in the database will be transferred to Domain scan page.""",
+       text="""URLs to check goes into the left box. Result will appear in the right box.
+Acceptable format is <domain name>.<extension>. Do not use protocol prefix.
+URLs not found in the database will be copied to Domain scan page.""",
        justify="left"
        )
 
@@ -125,8 +125,8 @@ class scans_page(page):
        )
 
        instruction = dlabel(self, 
-       text="""Domain to check goes into the left box. Result will appear in the right box.
-Acceptable format is <domain name>.<extension>. Do not use protocol or WWW prefix.
+       text="""URLs to check goes into the left box. Result will appear in the right box.
+Acceptable format is <domain name>.<extension>. Do not use protocol prefix.
 Be patient. Scanning takes one minute.""",
        justify="left"
        )
