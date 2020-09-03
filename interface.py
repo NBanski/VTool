@@ -1,7 +1,8 @@
 import tkinter as tk
 import tkinter.scrolledtext as stxt
-from database import insert_report, init_db, extract_report, search_database
+from database import insert_report, init_db, extract_report, search_database, query_scan_id, extract_report_by_id
 from settings import change_api
+import time
 
 # Here I extend Button and other classes of tkinter to define their properties.
 # "dbutton" stands for default button.
@@ -55,9 +56,9 @@ class reports_page(page):
        )
 
        instruction = dlabel(self, 
-       text="""Insert URL to get the report for into the left frame, then click the button. Skip protocol and WWW, use newline as separator.
-Results will be displayed in the second column. There is no URL limit other than defined by your API.
-Click on result to add it to scan queue (not yet implemented, wait until v2.0).""",
+       text="""Domain to check goes into the left box. Result will appear in the right box.
+Acceptable format is <domain name>.<extension>. Do not use protocol or WWW prefix.
+Domains not found in the database will be transferred to Domain scan page.""",
        justify="left"
        )
 
@@ -103,9 +104,83 @@ class scans_page(page):
    def __init__(self, *args, **kwargs):
        page.__init__(self, *args, **kwargs)
 
-       label = dlabel(self, 
-       text='This feature will be available in v2.0.\nWhen it"s done.™')
-       label.pack(side="top", fill="both", expand=True)
+       url_box = stxt.ScrolledText(self, 
+       fg="white", 
+       bg="gray15",
+       insertofftime=0,
+       width=40,
+       height=40,
+       wrap="none",
+       insertbackground="white",
+       )
+
+       result_box = stxt.ScrolledText(self, 
+       fg="white", 
+       bg="gray15",
+       insertofftime=0,
+       width=80,
+       height=40,
+       wrap="none",
+       state="normal"
+       )
+
+       instruction = dlabel(self, 
+       text="""Domain to check goes into the left box. Result will appear in the right box.
+Acceptable format is <domain name>.<extension>. Do not use protocol or WWW prefix.
+Be patient. Scanning takes one minute.""",
+       justify="left"
+       )
+
+       def get_urls():
+            urls = url_box.get("1.0", "end-1c").split("\n")
+            result_box.configure(state="normal")
+            result_box.delete(1.0, tk.END)
+            id_list = []
+            for _ in urls:
+                if _ == "" or " " in _:
+                    pass
+                else:
+                    _ = "http://" + _
+                    resource_id = query_scan_id(_)
+                    id_list.append(resource_id)
+                    result_box.insert(tk.END, "Scan request sent for... " + str(_) + "\n")
+                    result_box.update()
+            result_box.insert(tk.END, "Now, wait a minute. Literally.")
+            for _ in range(60):
+                result_box.delete(1.0, tk.END)
+                result_box.insert(tk.END, str(60 - _) + " seconds to go...")
+                time.sleep(1)
+                result_box.update()
+            result_box.delete(1.0, tk.END)
+            result_box.update()
+            for _ in id_list:
+                insert_report(_)
+                report = extract_report_by_id(_)
+                result_box.insert(tk.END, str(report) + "\n")
+                result_box.update()
+            result_box.configure(state="disabled")
+
+       b1_get_report = dbutton(self, 
+       text="Get the report!",
+       command=get_urls
+       )
+
+       instruction.pack(side="top",
+       pady=15
+       )
+
+       b1_get_report.pack(side="bottom",
+       padx=20,
+       pady=20
+       )
+
+       url_box.pack(side="left", 
+       padx=20
+       )
+
+       result_box.pack(side="right",
+       padx=20
+       )
 
 class history_page(page):
    def __init__(self, *args, **kwargs):
@@ -264,7 +339,7 @@ class main_window(tk.Frame):
         b1_get_report = dbutton(buttonframe, text="URL report", command=p1.lift)
         b2 = dbutton(buttonframe, text="URL scan", command=p2.lift)
         b3 = dbutton(buttonframe, text="File scan", command=p3.lift)
-        b4 = dbutton(buttonframe, text="History", command=p4.lift)
+        b4 = dbutton(buttonframe, text="Search history", command=p4.lift)
         b5 = dbutton(buttonframe, text="Settings", command=p5.lift)
 
         b1_get_report.pack(side="left", padx=(125,10), pady=(10,0))

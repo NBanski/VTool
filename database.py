@@ -42,7 +42,6 @@ def insert_report(url_or_id):
     if data["response_code"] == 1:
         table_name = "reports"
         x = 10
-
     # Here we're exctracting key values from JSON data to create SQL query.
     columns = list(data.keys())[:x]
     values = list(data.values())[:x]
@@ -59,9 +58,16 @@ def insert_report(url_or_id):
     except sqlite3.IntegrityError as e:
         print(e)
 
+def query_scan_id(url_or_id):
+    try:
+        data = single_url_scan(url_or_id)
+        scan_id = data["scan_id"]
+        return scan_id
+    except KeyError:
+        return {"response_code" : "0"}
+
 def extract_report(url_or_id):
     sql_string = "SELECT * FROM reports WHERE url LIKE {} ORDER BY scan_date DESC".format("'%" + url_or_id + "%'")
-    print(sql_string)
     try:
         db = get_db()
         report = db.execute(sql_string).fetchone()
@@ -84,6 +90,32 @@ def extract_report(url_or_id):
             print(e)
             return("Incorrect input.")
 
+def extract_report_by_id(url_or_id):
+    sql_string = "SELECT * FROM reports WHERE resource LIKE {} ORDER BY scan_date DESC".format("'%" + url_or_id + "%'")
+    try:
+        db = get_db()
+        report = db.execute(sql_string).fetchone()
+        rep_url = report[2]
+        rep_positives = report[8]
+        rep_all = report[9]
+        rep_time = report[4]
+        rep_data = rep_url + " - " + rep_positives + "/" + rep_all + " at " + rep_time
+        return rep_data
+    except sqlite3.IntegrityError as e:
+        print(e)
+    except TypeError as e:
+        try:
+            sql_string = "SELECT * FROM not_found WHERE resource LIKE {}".format("'%" + url_or_id + "%'")
+            print(sql_string)
+            not_found = db.execute(sql_string).fetchone()
+            url = not_found[1]
+            return (url + " not found in the dataset.")
+        except TypeError as e:
+            print(e)
+            return("Incorrect input.")
+
+extract_report_by_id("89bf419372266b1d204e494c257ad1717dd3d1af6e18959fe06f6b510023fe98-1599144346")
+
 def sqlite_wildcard(keyword):
     keyword = "'%" + keyword + "%'"
     return keyword
@@ -98,13 +130,13 @@ def search_database(url):
     all_results = []
     for _ in tables_list:
         if _ == "reports":
-            sql_string = "SELECT * FROM " + _ + " WHERE resource LIKE " + sqlite_wildcard(url)
+            sql_string = "SELECT * FROM " + _ + " WHERE url LIKE " + sqlite_wildcard(url)
             results = get_db().execute(sql_string).fetchall()
             for tup in results:
-                report_resource = tup[1]
+                report_url = tup[2]
                 report_result = tup[8] + "/" + tup[9]
                 report_date = tup[4]
-                res_data = report_resource + " " + report_result + " " + report_date
+                res_data = report_url + " " + report_result + " " + report_date
                 all_results.append(res_data)
         if _ == "not_found":
             sql_string = "SELECT * FROM " + _ + " WHERE resource LIKE " + sqlite_wildcard(url)
