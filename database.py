@@ -114,8 +114,6 @@ def extract_report_by_id(url_or_id):
             print(e)
             return("Incorrect input.")
 
-extract_report_by_id("89bf419372266b1d204e494c257ad1717dd3d1af6e18959fe06f6b510023fe98-1599144346")
-
 def sqlite_wildcard(keyword):
     keyword = "'%" + keyword + "%'"
     return keyword
